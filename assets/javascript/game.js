@@ -25,7 +25,7 @@ let wordArray = [
     "johnsons", 
     "pelee", 
     "rattlesnake", 
-    "balast", 
+    "ballast", 
     "buckeye", 
     "sugar", 
     "gibraltar", 
@@ -39,33 +39,38 @@ let wordArray = [
     "turtle",
     "starve",
     "indian",
-    "north harbour",
+    "northharbour",
     "ryersons",
     "mohawk"];
 
 
-const maxTries = 12;
+const maxGuesses = 12;
 let guessedLetters = [];
-let currentWordIndex;
+let currentWord;
 let guessingWord = [];
 let remainingGuesses = 0;       // remaining guesses
 let hasFinished = false;        //
 let wins = 0;                   // Set Wins to Zero
 let losses = 0;                 // Set Losses to Zero
+let usedWords = [];
 
 // needed to restart game & get new word
-function resetGame() {
-    remainingGuesses = maxTries;
+function gameReset() {
+    remainingGuesses = maxGuesses;
     document.getElementById("startMsg").innerText = "Press any letter to play!";
-    currentWordIndex = Math.floor(Math.random() * (wordArray.length));
+    currentWord = Math.floor(Math.random() * (wordArray.length));
     guessedLetters = [];
     guessingWord = [];
+    usedWords = [];
 
-    for (let i = 0; i < wordArray[currentWordIndex].length; i++) {
+    for (let i = 0; i < wordArray[currentWord].length; i++) {
         guessingWord.push("_");
     }
 
     updateGameContent();
+    
+    console.log("current word index in array:", currentWord);
+    console.log("island:", wordArray[currentWord]);
 };
 
 // send the html the updates and status of where we are in the game
@@ -79,8 +84,6 @@ function updateGameContent() {
         guessingWordText += guessingWord[i];
     }
 
-    console.log("CurrentWordIndex:", currentWordIndex);
-    console.log("island:", wordArray[currentWordIndex]);
     document.getElementById("currentWord").innerText = guessingWordText;
     document.getElementById("remainingChances").innerText = remainingGuesses;
     document.getElementById("usedLetters").innerText = guessedLetters;
@@ -88,25 +91,24 @@ function updateGameContent() {
 
 
 // test if the existing letter is in the array.
-function evaluateGuess(letter) {
-    // Array to store strArray of letters in string
-    let strArray = [];
-    console.log("Current Word Index :", currentWordIndex);
+function testGuess(letter) {
+    // Array to store lettersGuessed of letters in string
+    let lettersGuessed = [];
 
     // Loop through word finding all uses of guessed letter, store value in an array.
-    for (let i = 0; i < wordArray[currentWordIndex].length; i++) {
-        if (wordArray[currentWordIndex][i] === letter) {
-            strArray.push(i);
+    for (let i = 0; i < wordArray[currentWord].length; i++) {
+        if (wordArray[currentWord][i] === letter) {
+            lettersGuessed.push(i);
         }
     }
 
-    if (strArray.length <= 0) {
+    if (lettersGuessed.length <= 0) {
         remainingGuesses--;
     }
 
     else {
-        for (let i = 0; i < strArray.length; i++) {
-            guessingWord[strArray[i]] = letter;
+        for (let i = 0; i < lettersGuessed.length; i++) {
+            guessingWord[lettersGuessed[i]] = letter;
         }
     }
 };
@@ -116,7 +118,7 @@ function checkWin() {
     if (guessingWord.indexOf("_") === -1) {
         wins++;
         hasFinished = true;
-        document.getElementById("startMsg").innerText = "Congratulations!";
+        document.getElementById("startMsg").innerText = "Congratulations! Let's Play Another Game";
     }
 }; 
 
@@ -125,7 +127,7 @@ function checkLoss() {
     if (remainingGuesses <= 0) {
         hasFinished = true;
         losses++;
-        document.getElementById("startMsg").innerText = "Sorry you lose!";
+        document.getElementById("startMsg").innerText = "Sorry you lose! Try Again";
     }
 }
 
@@ -135,16 +137,16 @@ function letterPress(letter) {
         // Make sure we didn't use this letter yet
         if (guessedLetters.indexOf(letter) === -1) {
             guessedLetters.push(letter);
-            evaluateGuess(letter);
+            testGuess(letter);
         }
     }
 };
 
-// Event listener
+// Main gears of the game--event
 document.onkeyup = function (event) {
-    // If game finished, hit anything and reset.
+    // If game finished, hit any key to reset.
     if (hasFinished) {
-        resetGame();
+        gameReset();
         hasFinished = false;
     } 
     // Check to make sure a-z was pressed using the  ASCII Table codes 65 is A 90 is Z
