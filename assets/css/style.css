@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Galada|Raleway:400,700');
+
+    .jumbotron h1  {
+        font-family: 'Galada', cursive;
+        font-size: 50px;
+        color: #004E5A;
+        text-align: center;
+    }
+
+    .jumbotron h2{
+        font-family: 'Raleway', sans-serif;
+        font-weight: 700;
+        color:#00716C;
+        font-size: 20px;
+        padding-top: 5px;
+        text-align: center;
+
+    }
+
+    .jumbotron{
+        background-color:rgba(245,139,83,.5);
+        padding: 20px;
+        border-bottom: solid 3px #F58B53;
+    }
+
+    #gamecontent p {
+        font-family: 'Raleway', sans-serif;
+        font-weight:400px;
+        color: #004E5A;
+        margin-bottom:0px;
+        margin-top: 10px;
+    }
+
+    #gamecontent h2 {
+        font-family: 'Raleway', sans-serif;
+        font-weight:700px;
+        color: #004E5A;
+        padding-bottom: 10px;
+    }
+
+    #currentword h2{
+        letter-spacing: 4px;
+        color: #004E5A;
+    }
+
+    body{
+        background-image: url("../images/topography.png"); 
+    }
+    
+
